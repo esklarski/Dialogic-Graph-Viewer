@@ -28,7 +28,7 @@ res://
         - timeline_graphing.tscn
 ```
 
-Then reload the current project and you shuld see the viewer.
+Then reload the current project and you should see the viewer.
 
 
 # Further Information
