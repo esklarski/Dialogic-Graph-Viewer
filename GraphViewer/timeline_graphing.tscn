@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://jtwehtjvueug"]
 
-[ext_resource type="Script" path="res://addons/dialogic_additions/GraphViewer/scripts/timeline_graphing.gd" id="1_o4txp"]
-[ext_resource type="Script" path="res://addons/dialogic_additions/GraphViewer/scripts/timeline_graph_edit.gd" id="2_hejbe"]
+[ext_resource type="Script" uid="uid://fwc60wmkiinp" path="res://addons/dialogic_additions/GraphViewer/scripts/timeline_graphing.gd" id="1_o4txp"]
+[ext_resource type="Script" uid="uid://nl2ts8vrd7ch" path="res://addons/dialogic_additions/GraphViewer/scripts/timeline_graph_edit.gd" id="2_hejbe"]
 
 [node name="TimelineGraphing" type="Control"]
 layout_mode = 3
@@ -20,3 +20,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_hejbe")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Root:"
+
+[node name="FolderLineEdit" type="LineEdit" parent="Control/MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "please choose a folder"
+editable = false
+expand_to_text_length = true
+
+[node name="PickFolderButton" type="Button" parent="Control/MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pick Folder"
+
+[node name="RefreshButton" type="Button" parent="Control/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh View"
+
+[node name="ClearButton" type="Button" parent="Control/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear Graph"

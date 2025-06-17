@@ -1,15 +1,8 @@
 @tool
+class_name TimelineGraphEdit
 extends GraphEdit
 
 const NODE_PREFIX: String =  "Node%d"
-
-## Add timeline filepath here to have the viewer load it.
-const PATHS: Array[String] = [
-	"res://testing/timeline_graphing/timelines/timeline_graphing_1.dtl",
-	"res://testing/timeline_graphing/timelines/timeline_graphing_2.dtl",
-	"res://testing/timeline_graphing/timelines/timeline_graphing_3.dtl",
-	"res://testing/timeline_graphing/timelines/timeline_graphing_4.dtl",
-]
 
 var initialized: bool = false
 var node_count: int = 0
@@ -21,22 +14,75 @@ func init():
 	
 	print("Initializing graph view.")
 	gui_input.connect(_on_gui_input) # does nothing
-	popup_request.connect(_on_popup_requested) # triggers creating linked nodes
+	# popup_request.connect(_on_popup_requested) # triggers creating linked nodes via mouse click pointless
 	
-	var directory: Dictionary = ProjectSettings.get_setting("dialogic/directories/dtl_directory", {})
-	var timelines: Array[String]
+	initialized = true
+
+
+func clear_nodes() -> void:
+	clear_connections()
 	
-	for file in directory:
-		timelines.append(directory[file])
+	for node in timeline_nodes:
+		node.queue_free()
+	
+	timeline_nodes = []
+	
+	await get_tree().process_frame
+
+
+func refresh_timelines(root_directory: String = "") -> void:
+	await clear_nodes()
+	
+	if root_directory.is_empty():
+		printerr("No root directory specified.")
+		return
+	
+	var dir = DirAccess.open( root_directory )
+	
+	if dir == null:
+		printerr("Invalid directory specified.")
+		return
+	
+	var timelines := _find_timeline_files( root_directory )
+	
+	if timelines.size() < 1:
+		printerr("No timelines found in specified folder.")
+		return
 	
 	_load_timelines(timelines)
 	_connect_timelines()
 	arrange_nodes()
+
+
+func _get_all_registered_timelines() -> Array[String]:
+	var timelines: Array[String]
+	var directory: Dictionary = ProjectSettings.get_setting("dialogic/directories/dtl_directory", {})
 	
-	initialized = true
+	for key in directory:
+		timelines.append( directory[key] )
+	
+	return timelines
+
+
+func _find_timeline_files(directory: String) -> Array[String]:
+	var timelines: Array[String]
+	
+	var files: PackedStringArray = DirAccess.get_files_at(directory)
+	var directories: PackedStringArray = DirAccess.get_directories_at(directory)
+		
+	for file in files:
+		if file.ends_with(".dtl"):
+			timelines.append(directory + "/" + file)
+	
+	for folder in directories:
+		timelines.append_array( _find_timeline_files( directory + "/" + folder ) )
+	
+	return timelines
+
 
 # take timeline filepaths and process them into TimelineGraphNodes
 func _load_timelines(files: Array[String]) -> void:
+	print(files)
 	var timelines: Array[TimelineView] = []
 	
 	for path in files:
