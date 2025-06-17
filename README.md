@@ -10,7 +10,30 @@ My team and I have decided to proceed this way for now because:
 
 We've talked about making comment events editable though for now I'm keeping this a read only viewer until I get the hang of GraphEdit.
 
-Uses Godot 4.3 and the Dialogic Plugin:
+
+# Instalation
+
+The files here need to reside in the folder: `res://addons/dialogic_additions/`
+
+Like:
+```
+res://
+  -addons/
+    -dialogic/
+    -dialogic_additions/
+      -GraphViewer (*this addon*)
+        - scripts/
+          - ...
+        - index.gd
+        - timeline_graphing.tscn
+```
+
+Then reload the current project and you shuld see the viewer.
+
+
+# Further Information
+
+Uses the Dialogic Plugin and the Godot Engine:
 - https://godotengine.org/
 - https://github.com/dialogic-godot/dialogic
 
